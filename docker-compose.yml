@@ -1,0 +1,18 @@
+services:
+  runform-ai:
+    build: .
+    container_name: runform-ai
+    ports:
+      - "8510:8510"
+    environment:
+      PORT: 8510
+      MPLBACKEND: Agg
+    volumes:
+      - ./web_uploads:/app/web_uploads
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8510/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
